@@ -1,46 +1,53 @@
 Configuration ?= release
-DotNetVersion = `cat DotnetCLIToolsVersion.txt`
-DotNetToolPath = $(CURDIR)/artifacts/toolset/dotnet
-DotNetExe = "$(DotNetToolPath)/dotnet"
+Verbosity ?= normal
+VerbosityProperty = /Verbosity:$(Verbosity)
+MSBuild = msbuild
+RestoreCommand = $(MSBuild) /t:Restore
+BuildCommand = $(MSBuild) /t:Build
+TestCommand = $(MSBuild) /t:Test
+ProtoConfiguration = /p:Configuration=Proto
+ConfigurationProperty = /p:Configuration=$(Configuration)
 
-all: proto restore build test
+NF45 = /p:TargetFramework=net45
+NF472 = /p:TargetFramework=net472
+NS16 = /p:TargetFramework=netstandard1.6
+NS20 = /p:TargetFramework=netstandard2.0
+NCA20 = /p:TargetFramework=netcoreapp2.0
+NCA21 = /p:TargetFramework=netcoreapp2.1
 
-tools:
-	$(CURDIR)/scripts/dotnet-install.sh --version $(DotNetVersion) --install-dir "$(DotNetToolPath)"
+all: proto restore build
 
-proto: tools
-	$(DotNetExe) build-server shutdown
-	$(DotNetExe) restore src/buildtools/buildtools.proj
-	$(DotNetExe) restore src/fsharp/FSharp.Build/FSharp.Build.fsproj
-	$(DotNetExe) restore src/fsharp/fsc/fsc.fsproj
-	$(DotNetExe) build src/buildtools/buildtools.proj -c Proto
-	$(DotNetExe) build src/fsharp/FSharp.Build/FSharp.Build.fsproj -f netstandard2.0 -c Proto
-	$(DotNetExe) build src/fsharp/fsc/fsc.fsproj -f netcoreapp3.0 -c Proto
+proto:
+	$(RestoreCommand) src/buildtools/buildtools.proj 
+	$(RestoreCommand) src/fsharp/FSharp.Build/FSharp.Build.fsproj 
+	$(RestoreCommand) src/fsharp/fsc/fsc.fsproj 
+	$(BuildCommand) $(ProtoConfiguration) src/buildtools/buildtools.proj 
+	$(BuildCommand) $(NF472) $(ProtoConfiguration) $(VerbosityProperty) src/fsharp/FSharp.Build/FSharp.Build.fsproj
+	$(BuildCommand) $(NF472) $(ProtoConfiguration) src/fsharp/fsc/fsc.fsproj
 
 restore:
-	$(DotNetExe) restore src/fsharp/FSharp.Core/FSharp.Core.fsproj
-	$(DotNetExe) restore src/fsharp/FSharp.Build/FSharp.Build.fsproj
-	$(DotNetExe) restore src/fsharp/FSharp.Compiler.Private/FSharp.Compiler.Private.fsproj
-	$(DotNetExe) restore src/fsharp/fsc/fsc.fsproj
-	$(DotNetExe) restore src/fsharp/FSharp.Compiler.Interactive.Settings/FSharp.Compiler.Interactive.Settings.fsproj
-	$(DotNetExe) restore src/fsharp/fsi/fsi.fsproj
-	$(DotNetExe) restore tests/FSharp.Core.UnitTests/FSharp.Core.UnitTests.fsproj
-	$(DotNetExe) restore tests/FSharp.Build.UnitTests/FSharp.Build.UnitTests.fsproj
+	$(RestoreCommand) src/fsharp/FSharp.Core/FSharp.Core.fsproj
+	$(RestoreCommand) src/fsharp/FSharp.Build/FSharp.Build.fsproj
+	$(RestoreCommand) src/fsharp/FSharp.Compiler.Private/FSharp.Compiler.Private.fsproj
+	$(RestoreCommand) src/fsharp/fsc/fsc.fsproj
+	$(RestoreCommand) src/fsharp/FSharp.Compiler.Interactive.Settings/FSharp.Compiler.Interactive.Settings.fsproj
+	$(RestoreCommand) src/fsharp/fsi/fsi.fsproj
+	$(RestoreCommand) tests/FSharp.Core.UnitTests/FSharp.Core.UnitTests.fsproj
+	$(RestoreCommand) tests/FSharp.Build.UnitTests/FSharp.Build.UnitTests.fsproj
 
 build: proto restore
-	$(DotNetExe) build-server shutdown
-	$(DotNetExe) build -c $(Configuration) -f netstandard2.0 src/fsharp/FSharp.Core/FSharp.Core.fsproj
-	$(DotNetExe) build -c $(Configuration) -f netstandard2.0 src/fsharp/FSharp.Build/FSharp.Build.fsproj
-	$(DotNetExe) build -c $(Configuration) -f netstandard2.0 src/fsharp/FSharp.Compiler.Private/FSharp.Compiler.Private.fsproj
-	$(DotNetExe) build -c $(Configuration) -f netcoreapp3.0 src/fsharp/fsc/fsc.fsproj
-	$(DotNetExe) build -c $(Configuration) -f netstandard2.0 src/fsharp/FSharp.Compiler.Interactive.Settings/FSharp.Compiler.Interactive.Settings.fsproj
-	$(DotNetExe) build -c $(Configuration) -f netcoreapp3.0 src/fsharp/fsi/fsi.fsproj
-	$(DotNetExe) build -c $(Configuration) -f netcoreapp3.0 tests/FSharp.Core.UnitTests/FSharp.Core.UnitTests.fsproj
-	$(DotNetExe) build -c $(Configuration) -f netcoreapp3.0 tests/FSharp.Build.UnitTests/FSharp.Build.UnitTests.fsproj
+	$(BuildCommand) $(ConfigurationProperty) $(NF45) src/fsharp/FSharp.Core/FSharp.Core.fsproj
+	$(BuildCommand) $(ConfigurationProperty) $(NF472) src/fsharp/FSharp.Build/FSharp.Build.fsproj
+	$(BuildCommand) $(ConfigurationProperty) $(NF472) src/fsharp/FSharp.Compiler.Private/FSharp.Compiler.Private.fsproj
+	$(BuildCommand) $(ConfigurationProperty) $(NF472) src/fsharp/fsc/fsc.fsproj
+	$(BuildCommand) $(ConfigurationProperty) $(NF472) src/fsharp/FSharp.Compiler.Interactive.Settings/FSharp.Compiler.Interactive.Settings.fsproj
+	$(BuildCommand) $(ConfigurationProperty) $(NF472) src/fsharp/fsi/fsi.fsproj
+	$(BuildCommand) $(ConfigurationProperty) $(NF472) tests/FSharp.Core.UnitTests/FSharp.Core.UnitTests.fsproj
+	$(BuildCommand) $(ConfigurationProperty) $(NF472) tests/FSharp.Build.UnitTests/FSharp.Build.UnitTests.fsproj
 
 test: build
-	$(DotNetExe) test -f netcoreapp3.0 -c $(Configuration) --no-restore --no-build tests/FSharp.Core.UnitTests/FSharp.Core.UnitTests.fsproj -l "trx;LogFileName=$(CURDIR)/tests/TestResults/FSharp.Core.UnitTests.coreclr.trx"
-	$(DotNetExe) test -f netcoreapp3.0 -c $(Configuration) --no-restore --no-build tests/FSharp.Build.UnitTests/FSharp.Build.UnitTests.fsproj -l "trx;LogFileName=$(CURDIR)/tests/TestResults/FSharp.Build.UnitTests.coreclr.trx"
+	$(TestCommand) $(NF472) $(ConfigurationProperty) --no-restore --no-build tests/FSharp.Core.UnitTests/FSharp.Core.UnitTests.fsproj -l "trx;LogFileName=$(CURDIR)/tests/TestResults/FSharp.Core.UnitTests.coreclr.trx"
+	$(TestCommand) $(NF472) $(ConfigurationProperty) --no-restore --no-build tests/FSharp.Build.UnitTests/FSharp.Build.UnitTests.fsproj -l "trx;LogFileName=$(CURDIR)/tests/TestResults/FSharp.Build.UnitTests.coreclr.trx"
 
 clean:
 	rm -rf $(CURDIR)/artifacts
