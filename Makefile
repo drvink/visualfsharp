@@ -67,7 +67,7 @@ install:
 	-rm -fr $(DESTDIR)$(monodir)/msbuild/Microsoft/VisualStudio/v12.0/FSharp
 	-rm -fr $(DESTDIR)$(monodir)/msbuild/Microsoft/VisualStudio/v14.0/FSharp
 	-rm -fr $(DESTDIR)$(monodir)/msbuild/Microsoft/VisualStudio/v15.0/FSharp
-	$(MAKE) -C mono/FSharp.Core TargetDotnetProfile=net40 install
+	$(MAKE) -C mono/FSharp.Core TargetDotnetProfile=net45 install
 	$(MAKE) -C mono/FSharp.Build install
 	$(MAKE) -C mono/FSharp.Compiler.Private install
 	$(MAKE) -C mono/Fsc install

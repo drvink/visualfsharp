@@ -11,7 +11,7 @@ prefix = $(PREFIX)
 endif
 thisdir = $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 topdir = $(thisdir)../
-builddir = $(topdir)
+builddir = $(topdir)Artifacts/bin/
 libdir = $(prefix)/lib/
 bindir = $(prefix)/bin/
 monobindir = $(bindir)
@@ -25,6 +25,8 @@ debugvars:
 	@echo monolibdir=$(monolibdir)
 	@echo monobindir=$(monobindir)
 	@echo DESTDIR=$(DESTDIR)
+	@echo outdir=$(outdir)
+	@echo builddir=$(builddir)
 
 TargetDotnetProfile = net40
 Configuration = Release
@@ -108,12 +110,18 @@ PCLPATH = .NETCore
 outsuffix = $(TargetDotnetProfile)
 endif
 
+ifeq (x-$(TargetDotnetProfile)-,x-net45-)
+VERSION = 4.6.2 # TODO: Correct this 
+PCLPATH = .NETCore
+outsuffix = $(TargetDotnetProfile)
+endif
+
 
 FSCORE_DELAY_SIGN_TOKEN = b03f5f7f11d50a3a
 SIGN_TOKEN = f536804aa0eb945b
 
 tmpdir = .libs/$(Configuration)/
-outdir = $(builddir)$(Configuration)/$(outsuffix)/bin/
+outdir = $(builddir)$(NAME)/$(Configuration)/$(outsuffix)/
 
 INSTALL = $(SHELL) $(topdir)/mono/install-sh
 INSTALL_BIN = $(INSTALL) -c -m 755
