@@ -1,4 +1,6 @@
-Configuration ?= release
+Configuration ?= Release
+ConfigurationProperty = /p:Configuration=$(Configuration)
+
 Verbosity ?= normal
 VerbosityProperty = /Verbosity:$(Verbosity)
 MSBuild = msbuild
@@ -6,7 +8,6 @@ RestoreCommand = $(MSBuild) /t:Restore
 BuildCommand = $(MSBuild) /t:Build
 TestCommand = $(MSBuild) /t:Test
 ProtoConfiguration = /p:Configuration=Proto
-ConfigurationProperty = /p:Configuration=$(Configuration)
 
 NF45 = /p:TargetFramework=net45
 NF472 = /p:TargetFramework=net472
@@ -18,12 +19,12 @@ NCA21 = /p:TargetFramework=netcoreapp2.1
 all: proto restore build
 
 proto:
-	$(RestoreCommand) src/buildtools/buildtools.proj 
-	$(RestoreCommand) src/fsharp/FSharp.Build/FSharp.Build.fsproj 
-	$(RestoreCommand) src/fsharp/fsc/fsc.fsproj 
-	$(BuildCommand) $(ProtoConfiguration) src/buildtools/buildtools.proj 
-	$(BuildCommand) $(NF472) $(ProtoConfiguration) $(VerbosityProperty) src/fsharp/FSharp.Build/FSharp.Build.fsproj
-	$(BuildCommand) $(NF472) $(ProtoConfiguration) src/fsharp/fsc/fsc.fsproj
+	$(RestoreCommand) $(NF472) src/buildtools/buildtools.proj 
+	$(RestoreCommand) $(NF472) src/fsharp/FSharp.Build/FSharp.Build.fsproj 
+	$(RestoreCommand) $(NF472) src/fsharp/fsc/fsc.fsproj
+	$(BuildCommand) $(NF472) $(ConfigurationProperty) src/buildtools/buildtools.proj 
+	$(BuildCommand) $(NF472) $(ProtoConfiguration) src/fsharp/FSharp.Build/FSharp.Build.fsproj
+	$(BuildCommand) $(NF472) $(ProtoConfiguration) $(VerbosityProperty) src/fsharp/fsc/fsc.fsproj
 
 restore:
 	$(RestoreCommand) src/fsharp/FSharp.Core/FSharp.Core.fsproj
@@ -46,8 +47,8 @@ build: proto restore
 	$(BuildCommand) $(ConfigurationProperty) $(NF472) tests/FSharp.Build.UnitTests/FSharp.Build.UnitTests.fsproj
 
 test: build
-	$(TestCommand) $(NF472) $(ConfigurationProperty) --no-restore --no-build tests/FSharp.Core.UnitTests/FSharp.Core.UnitTests.fsproj -l "trx;LogFileName=$(CURDIR)/tests/TestResults/FSharp.Core.UnitTests.coreclr.trx"
-	$(TestCommand) $(NF472) $(ConfigurationProperty) --no-restore --no-build tests/FSharp.Build.UnitTests/FSharp.Build.UnitTests.fsproj -l "trx;LogFileName=$(CURDIR)/tests/TestResults/FSharp.Build.UnitTests.coreclr.trx"
+	$(TestCommand) $(NF472) $(ConfigurationProperty) tests/FSharp.Core.UnitTests/FSharp.Core.UnitTests.fsproj -l "trx;LogFileName=$(CURDIR)/tests/TestResults/FSharp.Core.UnitTests.coreclr.trx"
+	$(TestCommand) $(NF472) $(ConfigurationProperty) tests/FSharp.Build.UnitTests/FSharp.Build.UnitTests.fsproj -l "trx;LogFileName=$(CURDIR)/tests/TestResults/FSharp.Build.UnitTests.coreclr.trx"
 
 clean:
 	rm -rf $(CURDIR)/artifacts
