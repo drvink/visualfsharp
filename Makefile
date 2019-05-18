@@ -17,6 +17,8 @@ NS20 = /p:TargetFramework=netstandard2.0
 NCA20 = /p:TargetFramework=netcoreapp2.0
 NCA21 = /p:TargetFramework=netcoreapp2.1
 
+include $(topsrcdir)mono/config.make
+
 all: proto restore build
 
 proto:
@@ -55,3 +57,14 @@ test: build
 
 clean:
 	rm -rf $(CURDIR)/Artifacts
+
+install:
+	# clean out destination directories
+	-rm -fr $(DESTDIR)$(monodir)/fsharp
+	-rm -fr $(DESTDIR)$(monodir)/Microsoft\ F#
+	-rm -fr $(DESTDIR)$(monodir)/Microsoft\ SDKs/F#
+	-rm -fr $(DESTDIR)$(monodir)/msbuild/Microsoft/VisualStudio/v/FSharp
+	-rm -fr $(DESTDIR)$(monodir)/msbuild/Microsoft/VisualStudio/v11.0/FSharp
+	-rm -fr $(DESTDIR)$(monodir)/msbuild/Microsoft/VisualStudio/v12.0/FSharp
+	-rm -fr $(DESTDIR)$(monodir)/msbuild/Microsoft/VisualStudio/v14.0/FSharp
+	-rm -fr $(DESTDIR)$(monodir)/msbuild/Microsoft/VisualStudio/v15.0/FSharp

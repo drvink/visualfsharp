@@ -168,6 +168,7 @@ install-sdk-lib:
 	    echo " --> $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v12.0/FSharp/"; \
 	    echo " --> $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v14.0/FSharp/"; \
 	    echo " --> $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v15.0/FSharp/"; \
+			echo " --> $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v16.0/FSharp/"; \
 	    \
 	    mkdir -p $(tmpdir); \
 	    mkdir -p $(DESTDIR)$(monodir)/Microsoft\ F#/v4.0/; \
@@ -180,6 +181,7 @@ install-sdk-lib:
 	    mkdir -p $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v12.0/FSharp/; \
 	    mkdir -p $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v14.0/FSharp/; \
 	    mkdir -p $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v15.0/FSharp/; \
+			mkdir -p $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v16.0/FSharp/; \
 	    \
 	    $(INSTALL_LIB) $(outdir)Microsoft.FSharp.Targets $(DESTDIR)$(monodir)/fsharp/; \
 	    $(INSTALL_LIB) $(outdir)Microsoft.Portable.FSharp.Targets $(DESTDIR)$(monodir)/fsharp/; \
@@ -197,6 +199,7 @@ install-sdk-lib:
 	    $(INSTALL_LIB) $(tmpdir)Microsoft.FSharp.Targets $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v12.0/FSharp/; \
 	    $(INSTALL_LIB) $(tmpdir)Microsoft.FSharp.Targets $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v14.0/FSharp/; \
 	    $(INSTALL_LIB) $(tmpdir)Microsoft.FSharp.Targets $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v15.0/FSharp/; \
+			$(INSTALL_LIB) $(tmpdir)Microsoft.FSharp.Targets $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v16.0/FSharp/; \
 	    \
 	    echo '<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">' > $(tmpdir)Microsoft.Portable.FSharp.Targets; \
 	    echo '    <Import Project="$(monodir)/fsharp/Microsoft.Portable.FSharp.Targets" />' >> $(tmpdir)Microsoft.Portable.FSharp.Targets; \
@@ -211,24 +214,28 @@ install-sdk-lib:
 	    $(INSTALL_LIB) $(tmpdir)Microsoft.Portable.FSharp.Targets $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v12.0/FSharp/; \
 	    $(INSTALL_LIB) $(tmpdir)Microsoft.Portable.FSharp.Targets $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v14.0/FSharp/; \
 	    $(INSTALL_LIB) $(tmpdir)Microsoft.Portable.FSharp.Targets $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v15.0/FSharp/; \
+			$(INSTALL_LIB) $(tmpdir)Microsoft.Portable.FSharp.Targets $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v16.0/FSharp/; \
 	    \
 	    $(INSTALL_LIB) $(outdir)Microsoft.FSharp.NetSdk.props $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v/FSharp/; \
 	    $(INSTALL_LIB) $(outdir)Microsoft.FSharp.NetSdk.props $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v11.0/FSharp/; \
 	    $(INSTALL_LIB) $(outdir)Microsoft.FSharp.NetSdk.props $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v12.0/FSharp/; \
 	    $(INSTALL_LIB) $(outdir)Microsoft.FSharp.NetSdk.props $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v14.0/FSharp/; \
 	    $(INSTALL_LIB) $(outdir)Microsoft.FSharp.NetSdk.props $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v15.0/FSharp/; \
+			$(INSTALL_LIB) $(outdir)Microsoft.FSharp.NetSdk.props $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v16.0/FSharp/; \
 	    \
 	    $(INSTALL_LIB) $(outdir)Microsoft.FSharp.NetSdk.targets $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v/FSharp/; \
 	    $(INSTALL_LIB) $(outdir)Microsoft.FSharp.NetSdk.targets $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v11.0/FSharp/; \
 	    $(INSTALL_LIB) $(outdir)Microsoft.FSharp.NetSdk.targets $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v12.0/FSharp/; \
 	    $(INSTALL_LIB) $(outdir)Microsoft.FSharp.NetSdk.targets $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v14.0/FSharp/; \
 	    $(INSTALL_LIB) $(outdir)Microsoft.FSharp.NetSdk.targets $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v15.0/FSharp/; \
+			$(INSTALL_LIB) $(outdir)Microsoft.FSharp.NetSdk.targets $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v16.0/FSharp/; \
 	    \
 	    $(INSTALL_LIB) $(outdir)Microsoft.FSharp.Overrides.NetSdk.targets $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v/FSharp/; \
 	    $(INSTALL_LIB) $(outdir)Microsoft.FSharp.Overrides.NetSdk.targets $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v11.0/FSharp/; \
 	    $(INSTALL_LIB) $(outdir)Microsoft.FSharp.Overrides.NetSdk.targets $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v12.0/FSharp/; \
 	    $(INSTALL_LIB) $(outdir)Microsoft.FSharp.Overrides.NetSdk.targets $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v14.0/FSharp/; \
 	    $(INSTALL_LIB) $(outdir)Microsoft.FSharp.Overrides.NetSdk.targets $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v15.0/FSharp/; \
+			$(INSTALL_LIB) $(outdir)Microsoft.FSharp.Overrides.NetSdk.targets $(DESTDIR)$(monodir)/xbuild/Microsoft/VisualStudio/v16.0/FSharp/; \
 	fi
 	@if test x-$(outsuffix) = x-net40; then \
 	    if test -e $(outdir)$(NAME).dll; then \
