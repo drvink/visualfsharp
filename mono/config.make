@@ -4,7 +4,11 @@ DEFAULT: all
 
 monocmd = $(shell which mono)
 monocmddir = $(dir $(monocmd))
-prefix = $(shell (cd $(monocmddir)/..; pwd))
+ifeq (x-$(PREFIX)-,x--)
+ prefix = $(shell (cd $(monocmddir)/..; pwd))
+else
+prefix = $(PREFIX)
+endif
 thisdir = $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 topdir = $(thisdir)../
 builddir = $(topdir)
@@ -26,7 +30,6 @@ Configuration = Release
 DISTVERSION = 201011
 
 # Version number mappings for various versions of FSharp.Core
-
 
 ifeq (x-$(TargetDotnetProfile)-,x-net40-)
 
@@ -147,7 +150,7 @@ install-sdk-lib:
 	@mkdir -p $(DESTDIR)$(monodir)/fsharp
 	@if test "x$(DELAY_SIGN)" = "x1"; then \
 	    echo "Signing $(outdir)$(ASSEMBLY) with Mono key"; \
-	    $(monobindir)sn -q -R $(outdir)$(ASSEMBLY) $(topdir)mono/mono.snk; \
+	    $(monocmddir)sn -q -R $(outdir)$(ASSEMBLY) $(topdir)mono/mono.snk; \
 	fi
 	@if test x-$(NAME) = x-FSharp.Compiler.Private; then \
 	    echo "Installing extra dependency System.Collections.Immutable.dll to $(DESTDIR)$(monodir)/fsharp/"; \
