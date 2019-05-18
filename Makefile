@@ -6,7 +6,7 @@ VerbosityProperty = /Verbosity:$(Verbosity)
 MSBuild = msbuild
 RestoreCommand = $(MSBuild) /t:Restore
 BuildCommand = $(MSBuild) /t:Build
-TestCommand = $(MSBuild) /t:Test
+TestCommand = $(MSBuild) /t:VSTest
 ProtoConfiguration = /p:Configuration=Proto
 
 NF45 = /p:TargetFramework=net45
@@ -16,7 +16,7 @@ NS20 = /p:TargetFramework=netstandard2.0
 NCA20 = /p:TargetFramework=netcoreapp2.0
 NCA21 = /p:TargetFramework=netcoreapp2.1
 
-all: proto restore build
+all: proto restore build test
 
 proto:
 	$(RestoreCommand) $(NF472) src/buildtools/buildtools.proj 
@@ -47,8 +47,8 @@ build: proto restore
 	$(BuildCommand) $(ConfigurationProperty) $(NF472) tests/FSharp.Build.UnitTests/FSharp.Build.UnitTests.fsproj
 
 test: build
-	$(TestCommand) $(NF472) $(ConfigurationProperty) tests/FSharp.Core.UnitTests/FSharp.Core.UnitTests.fsproj -l "trx;LogFileName=$(CURDIR)/tests/TestResults/FSharp.Core.UnitTests.coreclr.trx"
-	$(TestCommand) $(NF472) $(ConfigurationProperty) tests/FSharp.Build.UnitTests/FSharp.Build.UnitTests.fsproj -l "trx;LogFileName=$(CURDIR)/tests/TestResults/FSharp.Build.UnitTests.coreclr.trx"
+	$(TestCommand) $(NF472) $(ConfigurationProperty) tests/FSharp.Core.UnitTests/FSharp.Core.UnitTests.fsproj /p:VSTestNoBuild=true /p:VSTestLogger="trx;LogFileName=$(CURDIR)/tests/TestResults/FSharp.Core.UnitTests.coreclr.trx"
+	$(TestCommand) $(NF472) $(ConfigurationProperty) tests/FSharp.Build.UnitTests/FSharp.Build.UnitTests.fsproj /p:VSTestNoBuild=true /p:VSTestLogger="trx;LogFileName=$(CURDIR)/tests/TestResults/FSharp.Build.UnitTests.coreclr.trx"
 
 clean:
-	rm -rf $(CURDIR)/artifacts
+	rm -rf $(CURDIR)/Artifacts
