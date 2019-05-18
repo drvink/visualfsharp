@@ -59,7 +59,6 @@ clean:
 	rm -rf $(CURDIR)/Artifacts
 
 install:
-	# clean out destination directories
 	-rm -fr $(DESTDIR)$(monodir)/fsharp
 	-rm -fr $(DESTDIR)$(monodir)/Microsoft\ F#
 	-rm -fr $(DESTDIR)$(monodir)/Microsoft\ SDKs/F#
@@ -68,3 +67,24 @@ install:
 	-rm -fr $(DESTDIR)$(monodir)/msbuild/Microsoft/VisualStudio/v12.0/FSharp
 	-rm -fr $(DESTDIR)$(monodir)/msbuild/Microsoft/VisualStudio/v14.0/FSharp
 	-rm -fr $(DESTDIR)$(monodir)/msbuild/Microsoft/VisualStudio/v15.0/FSharp
+	$(MAKE) -C mono/FSharp.Core TargetDotnetProfile=net40 install
+	$(MAKE) -C mono/FSharp.Build install
+	$(MAKE) -C mono/FSharp.Compiler.Private install
+	$(MAKE) -C mono/Fsc install
+	$(MAKE) -C mono/FSharp.Compiler.Interactive.Settings install
+	$(MAKE) -C mono/FSharp.Compiler.Server.Shared install
+	$(MAKE) -C mono/fsi install
+	$(MAKE) -C mono/fsiAnyCpu install
+	$(MAKE) -C mono/FSharp.Core TargetDotnetProfile=net40 FSharpCoreBackVersion=3.0 install
+	$(MAKE) -C mono/FSharp.Core TargetDotnetProfile=net40 FSharpCoreBackVersion=3.1 install
+	$(MAKE) -C mono/FSharp.Core TargetDotnetProfile=net40 FSharpCoreBackVersion=4.0 install
+	$(MAKE) -C mono/FSharp.Core TargetDotnetProfile=net40 FSharpCoreBackVersion=4.1 install
+	$(MAKE) -C mono/FSharp.Core TargetDotnetProfile=portable47 install
+	$(MAKE) -C mono/FSharp.Core TargetDotnetProfile=portable7 install
+	$(MAKE) -C mono/FSharp.Core TargetDotnetProfile=portable78 install
+	$(MAKE) -C mono/FSharp.Core TargetDotnetProfile=portable259 install
+	$(MAKE) -C mono/FSharp.Core TargetDotnetProfile=monoandroid10+monotouch10+xamarinios10 install
+	$(MAKE) -C mono/FSharp.Core TargetDotnetProfile=xamarinmacmobile install
+	echo "------------------------------ INSTALLED FILES --------------"
+	ls -xlR $(DESTDIR)$(monodir)/fsharp $(DESTDIR)$(monodir)/msbuild $(DESTDIR)$(monodir)/xbuild $(DESTDIR)$(monodir)/Reference\ Assemblies $(DESTDIR)$(monodir)/gac/FSharp* $(DESTDIR)$(monodir)/Microsoft* || true
+

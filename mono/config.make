@@ -24,6 +24,7 @@ debugvars:
 	@echo monodir=$(monodir)
 	@echo monolibdir=$(monolibdir)
 	@echo monobindir=$(monobindir)
+	@echo DESTDIR=$(DESTDIR)
 
 TargetDotnetProfile = net40
 Configuration = Release
