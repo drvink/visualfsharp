@@ -17,7 +17,17 @@ NS20 = /p:TargetFramework=netstandard2.0
 NCA20 = /p:TargetFramework=netcoreapp2.0
 NCA21 = /p:TargetFramework=netcoreapp2.1
 
+PackageRoot ?= $(shell nuget locals global-packages -list | cut -d' ' -f2)
+NUnitVersion ?= $(shell ls $(PackageRoot)nunit.runners | sort -r | head -n 1)
+NUnitRunner = $(PackageRoot)nunit.consolerunner/$(NUnitVersion)/tools/nunit3-console.exe
+NUnitCommand = $(monocmd) $(NUnitRunner)
+
 include $(topsrcdir)mono/config.make
+
+debug: debugvars
+	@echo PackageRoot=$(PackageRoot)
+	@echo NUnitVersion=$(NUnitVersion)
+	@echo NUnitCommand=$(NUnitCommand)
 
 all: proto restore build
 
@@ -49,11 +59,10 @@ build: proto restore
 	$(BuildCommand) $(ConfigurationProperty) $(NF472) tests/FSharp.Core.UnitTests/FSharp.Core.UnitTests.fsproj
 	$(BuildCommand) $(ConfigurationProperty) $(NF472) tests/FSharp.Build.UnitTests/FSharp.Build.UnitTests.fsproj
 
-# note: can only run the VsTest target on dotnet sdk preview 3 or better, so right now this won't work on mono 5.20.
-# todo: replace with nunit invocation directly for mono builds?
-test: build
-	$(TestCommand) $(NF472) $(ConfigurationProperty) tests/FSharp.Core.UnitTests/FSharp.Core.UnitTests.fsproj /p:VSTestNoBuild=true /p:VSTestLogger="trx;LogFileName=$(CURDIR)/tests/TestResults/FSharp.Core.UnitTests.coreclr.trx"
-	$(TestCommand) $(NF472) $(ConfigurationProperty) tests/FSharp.Build.UnitTests/FSharp.Build.UnitTests.fsproj /p:VSTestNoBuild=true /p:VSTestLogger="trx;LogFileName=$(CURDIR)/tests/TestResults/FSharp.Build.UnitTests.coreclr.trx"
+test:
+	$(NUnitCommand) $(builddir)/FSharp.Core.UnitTests/$(Configuration)/net472/FSharp.Core.UnitTests.dll
+	$(NUnitCommand) $(builddir)/FSharp.Build.UnitTests/$(Configuration)/net472/FSharp.Build.UnitTests.dll
+	# TODO: expand the set of tests that are run on mono here (ie FSharp.Compiler.UnitTests, fsharp/FSharpSuite.Tests.fsproj, fsharpqa/run.fsharpqa.test.fsx)
 
 clean:
 	rm -rf $(CURDIR)/Artifacts
