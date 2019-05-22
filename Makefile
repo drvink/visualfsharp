@@ -67,7 +67,7 @@ test:
 	# TODO: expand the set of tests that are run on mono here (ie FSharp.Compiler.UnitTests, fsharp/FSharpSuite.Tests.fsproj, fsharpqa/run.fsharpqa.test.fsx)
 
 clean:
-	rm -rf $(CURDIR)/Artifacts
+	rm -rf $(CURDIR)/artifacts
 
 install:
 	-rm -fr $(DESTDIR)$(monodir)/fsharp

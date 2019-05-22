@@ -11,7 +11,7 @@ prefix = $(PREFIX)
 endif
 thisdir = $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 topdir = $(thisdir)../
-builddir = $(topdir)Artifacts/bin/
+builddir = $(topdir)artifacts/bin/
 libdir = $(prefix)/lib/
 bindir = $(prefix)/bin/
 monobindir = $(bindir)
