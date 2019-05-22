@@ -46,6 +46,7 @@ restore:
 	$(RestoreCommand) src/fsharp/fsc/fsc.fsproj
 	$(RestoreCommand) src/fsharp/FSharp.Compiler.Interactive.Settings/FSharp.Compiler.Interactive.Settings.fsproj
 	$(RestoreCommand) src/fsharp/fsi/fsi.fsproj
+	$(RestoreCommand) src/fsharp/fsiAnyCpu/fsiAnyCpu.fsproj
 	$(RestoreCommand) tests/FSharp.Core.UnitTests/FSharp.Core.UnitTests.fsproj
 	$(RestoreCommand) tests/FSharp.Build.UnitTests/FSharp.Build.UnitTests.fsproj
 
@@ -56,6 +57,7 @@ build: proto restore
 	$(BuildCommand) $(ConfigurationProperty) $(NF472) src/fsharp/fsc/fsc.fsproj
 	$(BuildCommand) $(ConfigurationProperty) $(NF472) src/fsharp/FSharp.Compiler.Interactive.Settings/FSharp.Compiler.Interactive.Settings.fsproj
 	$(BuildCommand) $(ConfigurationProperty) $(NF472) src/fsharp/fsi/fsi.fsproj
+	$(BuildCommand) $(ConfigurationProperty) $(NF472) src/fsharp/fsiAnyCpu/fsiAnyCpu.fsproj
 	$(BuildCommand) $(ConfigurationProperty) $(NF472) tests/FSharp.Core.UnitTests/FSharp.Core.UnitTests.fsproj
 	$(BuildCommand) $(ConfigurationProperty) $(NF472) tests/FSharp.Build.UnitTests/FSharp.Build.UnitTests.fsproj
 
@@ -77,23 +79,23 @@ install:
 	-rm -fr $(DESTDIR)$(monodir)/msbuild/Microsoft/VisualStudio/v14.0/FSharp
 	-rm -fr $(DESTDIR)$(monodir)/msbuild/Microsoft/VisualStudio/v15.0/FSharp
 	$(MAKE) -C mono/FSharp.Core TargetDotnetProfile=net45 install
-	$(MAKE) -C mono/FSharp.Build install
-	$(MAKE) -C mono/FSharp.Compiler.Private install
-	$(MAKE) -C mono/Fsc install
-	$(MAKE) -C mono/FSharp.Compiler.Interactive.Settings install
-	$(MAKE) -C mono/FSharp.Compiler.Server.Shared install
-	$(MAKE) -C mono/fsi install
-	$(MAKE) -C mono/fsiAnyCpu install
-	$(MAKE) -C mono/FSharp.Core TargetDotnetProfile=net40 FSharpCoreBackVersion=3.0 install
-	$(MAKE) -C mono/FSharp.Core TargetDotnetProfile=net40 FSharpCoreBackVersion=3.1 install
-	$(MAKE) -C mono/FSharp.Core TargetDotnetProfile=net40 FSharpCoreBackVersion=4.0 install
-	$(MAKE) -C mono/FSharp.Core TargetDotnetProfile=net40 FSharpCoreBackVersion=4.1 install
-	$(MAKE) -C mono/FSharp.Core TargetDotnetProfile=portable47 install
-	$(MAKE) -C mono/FSharp.Core TargetDotnetProfile=portable7 install
-	$(MAKE) -C mono/FSharp.Core TargetDotnetProfile=portable78 install
-	$(MAKE) -C mono/FSharp.Core TargetDotnetProfile=portable259 install
-	$(MAKE) -C mono/FSharp.Core TargetDotnetProfile=monoandroid10+monotouch10+xamarinios10 install
-	$(MAKE) -C mono/FSharp.Core TargetDotnetProfile=xamarinmacmobile install
+	$(MAKE) -C mono/FSharp.Build TargetDotnetProfile=net472 install
+	$(MAKE) -C mono/FSharp.Compiler.Private TargetDotnetProfile=net472 install
+	$(MAKE) -C mono/Fsc TargetDotnetProfile=net472 install
+	$(MAKE) -C mono/FSharp.Compiler.Interactive.Settings TargetDotnetProfile=net472 install
+	$(MAKE) -C mono/FSharp.Compiler.Server.Shared TargetDotnetProfile=net472 install
+	$(MAKE) -C mono/fsi TargetDotnetProfile=net472 install
+	$(MAKE) -C mono/fsiAnyCpu TargetDotnetProfile=net472 install
+	# $(MAKE) -C mono/FSharp.Core TargetDotnetProfile=net40 FSharpCoreBackVersion=3.0 install
+	# $(MAKE) -C mono/FSharp.Core TargetDotnetProfile=net40 FSharpCoreBackVersion=3.1 install
+	# $(MAKE) -C mono/FSharp.Core TargetDotnetProfile=net40 FSharpCoreBackVersion=4.0 install
+	# $(MAKE) -C mono/FSharp.Core TargetDotnetProfile=net40 FSharpCoreBackVersion=4.1 install
+	# $(MAKE) -C mono/FSharp.Core TargetDotnetProfile=portable47 install
+	# $(MAKE) -C mono/FSharp.Core TargetDotnetProfile=portable7 install
+	# $(MAKE) -C mono/FSharp.Core TargetDotnetProfile=portable78 install
+	# $(MAKE) -C mono/FSharp.Core TargetDotnetProfile=portable259 install
+	# $(MAKE) -C mono/FSharp.Core TargetDotnetProfile=monoandroid10+monotouch10+xamarinios10 install
+	# $(MAKE) -C mono/FSharp.Core TargetDotnetProfile=xamarinmacmobile install
 	echo "------------------------------ INSTALLED FILES --------------"
 	ls -xlR $(DESTDIR)$(monodir)/fsharp $(DESTDIR)$(monodir)/msbuild $(DESTDIR)$(monodir)/xbuild $(DESTDIR)$(monodir)/Reference\ Assemblies $(DESTDIR)$(monodir)/gac/FSharp* $(DESTDIR)$(monodir)/Microsoft* || true
 

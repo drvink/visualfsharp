@@ -19,6 +19,7 @@ monolibdir = $(libdir)
 monodir = $(monolibdir)mono
 
 debugvars:
+	@echo --------VARS--------
 	@echo prefix=$(prefix)
 	@echo topdir=$(topdir)
 	@echo monodir=$(monodir)
@@ -27,6 +28,7 @@ debugvars:
 	@echo DESTDIR=$(DESTDIR)
 	@echo outdir=$(outdir)
 	@echo builddir=$(builddir)
+	@echo --------ENDVARS-------
 
 TargetDotnetProfile = net40
 Configuration = Release
@@ -111,8 +113,21 @@ outsuffix = $(TargetDotnetProfile)
 endif
 
 ifeq (x-$(TargetDotnetProfile)-,x-net45-)
-VERSION = 4.6.2 # TODO: Correct this 
+# TODO: Correct this version
+VERSION = 4.5.0
 PCLPATH = .NETCore
+outsuffix = $(TargetDotnetProfile)
+endif
+
+ifeq (x-$(TargetDotnetProfile)-,x-net462-)
+# TODO: Correct this version
+VERSION = 4.6.2
+outsuffix = $(TargetDotnetProfile)
+endif
+
+ifeq (x-$(TargetDotnetProfile)-,x-net472-)
+# TODO: Correct this version
+VERSION = 4.7.2
 outsuffix = $(TargetDotnetProfile)
 endif
 
@@ -154,7 +169,7 @@ NO_DIST = .gitignore lib/debug lib/proto lib/release
 #     .../lib/mono/xbuild/Microsoft/VisualStudio/v/FSharp/Microsoft.FSharp.Targets
 # since this is the location if 'xbuild' fails to set VisualStudioVersion.
 #
-install-sdk-lib:
+install-sdk-lib: debugvars
 	@echo "Installing $(ASSEMBLY)"
 	@mkdir -p $(DESTDIR)$(monodir)/fsharp
 	@if test "x$(DELAY_SIGN)" = "x1"; then \
@@ -299,7 +314,7 @@ install-sdk-lib:
 
 # The binaries fsc.exe and fsi.exe only get installed for Mono 4.5 profile
 # This also installs 'fsharpc' and 'fsharpi' and 'fsharpiAnyCpu'
-install-bin:
+install-bin: debugvars
 	chmod +x $(outdir)$(ASSEMBLY)
 	sed -e 's,[@]DIR[@],$(monodir)/fsharp,g' -e 's,[@]TOOL[@],$(ASSEMBLY),g' -e 's,[@]MONOBINDIR[@],$(monobindir),g' < $(topdir)mono/launcher > $(outdir)$(subst fs,fsharp,$(NAME))
 	chmod +x $(outdir)$(subst fs,fsharp,$(NAME))

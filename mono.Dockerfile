@@ -8,3 +8,5 @@ WORKDIR /fsharp
 COPY . .
 
 RUN make
+
+RUN make install
