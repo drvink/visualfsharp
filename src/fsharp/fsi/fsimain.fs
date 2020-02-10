@@ -218,7 +218,7 @@ let evaluateSession(argv: string[]) =
 
         let legacyReferenceResolver = 
 #if CROSS_PLATFORM_COMPILER
-            SimulatedMSBuildReferenceResolver.SimulatedMSBuildResolver
+            FSharp.Compiler.SimulatedMSBuildReferenceResolver.getResolver()
 #else
             LegacyMSBuildReferenceResolver.getResolver()
 #endif

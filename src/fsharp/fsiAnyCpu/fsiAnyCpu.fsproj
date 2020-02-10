@@ -37,6 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="netstandard" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="PresentationCore" />

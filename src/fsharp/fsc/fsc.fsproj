@@ -41,6 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="netstandard" />
     <PackageReference Include="System.Console" Version="$(SystemConsoleVersion)" />
     <PackageReference Include="System.Linq.Expressions" Version="$(SystemLinqExpressionsVersion)" />
     <PackageReference Include="System.Reflection.Metadata" Version="$(SystemReflectionMetadataVersion)" />

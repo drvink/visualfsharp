@@ -241,7 +241,7 @@ module internal Implementation =
         Array.Clear(gotoTableCache, 0, gotoTableCache.Length)
         use _cacheDisposal = 
             { new IDisposable with 
-                member _.Dispose() = 
+                member __.Dispose() =
                     ArrayPool<int>.Shared.Return actionTableCache
                     ArrayPool<int>.Shared.Return gotoTableCache }
         let actionTable = AssocTable(tables.actionTableElements, tables.actionTableRowOffsets, actionTableCache, cacheSize)

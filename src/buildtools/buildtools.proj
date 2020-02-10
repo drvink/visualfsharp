@@ -8,7 +8,8 @@
   <ItemGroup>
     <Projects Include="fslex\fslex.fsproj" />
     <Projects Include="fsyacc\fsyacc.fsproj" />
-    <Projects Include="AssemblyCheck\AssemblyCheck.fsproj" />
+    <!-- FIXME determine this automatically somehow -->
+    <Projects Include="AssemblyCheck\AssemblyCheck.fsproj" Condition="'$(MonoPackaging)' != 'true'" />
   </ItemGroup>
 
   <Target Name="Build">

@@ -424,14 +424,14 @@ type TokenTupPool() =
 
     let stack = System.Collections.Generic.Stack(Array.init maxSize (fun _ -> TokenTup(Unchecked.defaultof<_>, Unchecked.defaultof<_>, Unchecked.defaultof<_>)))
 
-    member _.Rent() = 
+    member __.Rent() =
         if stack.Count = 0 then
             assert false
             TokenTup(Unchecked.defaultof<_>, Unchecked.defaultof<_>, Unchecked.defaultof<_>)
         else
             stack.Pop()
 
-    member _.Return(x: TokenTup) =
+    member __.Return(x: TokenTup) =
         x.Token <- Unchecked.defaultof<_>
         x.LexbufState <- Unchecked.defaultof<_>
         x.LastTokenPos <- Unchecked.defaultof<_>

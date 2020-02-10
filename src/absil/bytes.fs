@@ -96,20 +96,20 @@ type ByteArrayMemory(bytes: byte[], offset, length) =
         if offset < 0 || (offset + length) > bytes.Length then
             raise (ArgumentOutOfRangeException("offset"))
     
-    override _.Item 
+    override __.Item
         with get i = bytes.[offset + i]
         and set i v = bytes.[offset + i] <- v
 
-    override _.Length = length
+    override __.Length = length
 
-    override _.ReadBytes(pos, count) = 
+    override __.ReadBytes(pos, count) =
         checkCount count
         if count > 0 then
             Array.sub bytes (offset + pos) count
         else
             Array.empty
 
-    override _.ReadInt32 pos =
+    override __.ReadInt32 pos =
         let finalOffset = offset + pos
         (uint32 bytes.[finalOffset]) |||
         ((uint32 bytes.[finalOffset + 1]) <<< 8) |||
@@ -117,47 +117,47 @@ type ByteArrayMemory(bytes: byte[], offset, length) =
         ((uint32 bytes.[finalOffset + 3]) <<< 24)
         |> int
 
-    override _.ReadUInt16 pos =
+    override __.ReadUInt16 pos =
         let finalOffset = offset + pos
         (uint16 bytes.[finalOffset]) |||
         ((uint16 bytes.[finalOffset + 1]) <<< 8)
 
-    override _.ReadUtf8String(pos, count) =
+    override __.ReadUtf8String(pos, count) =
         checkCount count
         if count > 0 then
             System.Text.Encoding.UTF8.GetString(bytes, offset + pos, count)
         else
             String.Empty
 
-    override _.Slice(pos, count) =
+    override __.Slice(pos, count) =
         checkCount count
         if count > 0 then
             ByteArrayMemory(bytes, offset + pos, count) :> ByteMemory
         else
             ByteArrayMemory(Array.empty, 0, 0) :> ByteMemory
 
-    override _.CopyTo stream =
+    override __.CopyTo stream =
         if length > 0 then
             stream.Write(bytes, offset, length)
 
-    override _.Copy(srcOffset, dest, destOffset, count) =
+    override __.Copy(srcOffset, dest, destOffset, count) =
         checkCount count
         if count > 0 then
             Array.blit bytes (offset + srcOffset) dest destOffset count
 
-    override _.ToArray() =
+    override __.ToArray() =
         if length > 0 then
             Array.sub bytes offset length
         else
             Array.empty
 
-    override _.AsStream() =
+    override __.AsStream() =
         if length > 0 then
             new MemoryStream(bytes, offset, length) :> Stream
         else
             new MemoryStream([||], 0, 0, false) :> Stream
 
-    override _.AsReadOnlyStream() =
+    override __.AsReadOnlyStream() =
         if length > 0 then
             new MemoryStream(bytes, offset, length, false) :> Stream
         else
@@ -204,7 +204,7 @@ type RawByteMemory(addr: nativeptr<byte>, length: int, holder: obj) =
         if length < 0 then
             raise (ArgumentOutOfRangeException("length"))
 
-    override _.Item 
+    override __.Item
         with get i =
             check i
             NativePtr.add addr i
@@ -213,9 +213,9 @@ type RawByteMemory(addr: nativeptr<byte>, length: int, holder: obj) =
             check i
             NativePtr.set addr i v
 
-    override _.Length = length
+    override __.Length = length
 
-    override _.ReadUtf8String(pos, count) =
+    override __.ReadUtf8String(pos, count) =
         checkCount count
         if count > 0 then
             check pos
@@ -224,7 +224,7 @@ type RawByteMemory(addr: nativeptr<byte>, length: int, holder: obj) =
         else
             String.Empty
 
-    override _.ReadBytes(pos, count) = 
+    override __.ReadBytes(pos, count) =
         checkCount count
         if count > 0 then
             check pos
@@ -235,17 +235,17 @@ type RawByteMemory(addr: nativeptr<byte>, length: int, holder: obj) =
         else
             Array.empty
 
-    override _.ReadInt32 pos =
+    override __.ReadInt32 pos =
         check pos
         check (pos + 3)
         Marshal.ReadInt32(NativePtr.toNativeInt addr + nativeint pos)
 
-    override _.ReadUInt16 pos =
+    override __.ReadUInt16 pos =
         check pos
         check (pos + 1)
         uint16(Marshal.ReadInt16(NativePtr.toNativeInt addr + nativeint pos))
 
-    override _.Slice(pos, count) =
+    override __.Slice(pos, count) =
         checkCount count
         if count > 0 then
             check pos
@@ -259,13 +259,13 @@ type RawByteMemory(addr: nativeptr<byte>, length: int, holder: obj) =
             use stream2 = x.AsStream()
             stream2.CopyTo stream
 
-    override _.Copy(srcOffset, dest, destOffset, count) =
+    override __.Copy(srcOffset, dest, destOffset, count) =
         checkCount count
         if count > 0 then
             check srcOffset
             Marshal.Copy(NativePtr.toNativeInt addr + nativeint srcOffset, dest, destOffset, count)
 
-    override _.ToArray() =
+    override __.ToArray() =
         if length > 0 then
             let res = Array.zeroCreate<byte> length
             Marshal.Copy(NativePtr.toNativeInt addr, res, 0, res.Length)
@@ -273,13 +273,13 @@ type RawByteMemory(addr: nativeptr<byte>, length: int, holder: obj) =
         else
             Array.empty
 
-    override _.AsStream() =
+    override __.AsStream() =
         if length > 0 then
             new SafeUnmanagedMemoryStream(addr, int64 length, holder) :> Stream
         else
             new MemoryStream([||], 0, 0, false) :> Stream
 
-    override _.AsReadOnlyStream() =
+    override __.AsReadOnlyStream() =
         if length > 0 then
             new SafeUnmanagedMemoryStream(addr, int64 length, int64 length, FileAccess.Read, holder) :> Stream
         else
@@ -288,27 +288,27 @@ type RawByteMemory(addr: nativeptr<byte>, length: int, holder: obj) =
 [<Struct;NoEquality;NoComparison>]
 type ReadOnlyByteMemory(bytes: ByteMemory) =
 
-    member _.Item with get i = bytes.[i]
+    member __.Item with get i = bytes.[i]
 
-    member _.Length with get () = bytes.Length
+    member __.Length with get () = bytes.Length
 
-    member _.ReadBytes(pos, count) = bytes.ReadBytes(pos, count)
+    member __.ReadBytes(pos, count) = bytes.ReadBytes(pos, count)
 
-    member _.ReadInt32 pos = bytes.ReadInt32 pos
+    member __.ReadInt32 pos = bytes.ReadInt32 pos
 
-    member _.ReadUInt16 pos = bytes.ReadUInt16 pos
+    member __.ReadUInt16 pos = bytes.ReadUInt16 pos
 
-    member _.ReadUtf8String(pos, count) = bytes.ReadUtf8String(pos, count)
+    member __.ReadUtf8String(pos, count) = bytes.ReadUtf8String(pos, count)
 
-    member _.Slice(pos, count) = bytes.Slice(pos, count) |> ReadOnlyByteMemory
+    member __.Slice(pos, count) = bytes.Slice(pos, count) |> ReadOnlyByteMemory
 
-    member _.CopyTo stream = bytes.CopyTo stream
+    member __.CopyTo stream = bytes.CopyTo stream
 
-    member _.Copy(srcOffset, dest, destOffset, count) = bytes.Copy(srcOffset, dest, destOffset, count)
+    member __.Copy(srcOffset, dest, destOffset, count) = bytes.Copy(srcOffset, dest, destOffset, count)
 
-    member _.ToArray() = bytes.ToArray()
+    member __.ToArray() = bytes.ToArray()
 
-    member _.AsStream() = bytes.AsReadOnlyStream()
+    member __.AsStream() = bytes.AsReadOnlyStream()
 
 type ByteMemory with
 

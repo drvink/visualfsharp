@@ -1570,7 +1570,7 @@ module internal MagicAssemblyResolution =
         member this.LoadNativeLibrary(path: string): IntPtr =
             base.LoadUnmanagedDllFromPath(path)
 
-        override _.Load(_path: AssemblyName): Assembly =
+        override __.Load(_path: AssemblyName): Assembly =
             raise (NotImplementedException())
 
         static member NativeLoadContext = new FsiNativeAssemblyLoadContext()

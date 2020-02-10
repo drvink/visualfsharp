@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <ProjectReference Include="$(MSBuildThisFileDirectory)..\FSharp.Core\FSharp.Core.fsproj" />
+    <!-- <Reference Include="netstandard" /> -->
     <PackageReference Include="System.Runtime.Loader" Version="$(SystemRuntimeLoaderVersion)" />
   </ItemGroup>
 

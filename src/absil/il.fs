@@ -2598,7 +2598,7 @@ type ILGlobals(primaryScopeRef: ILScopeRef, assembliesThatForwardToPrimaryAssemb
 
     let mkSysILTypeRef nm = mkILTyRef (primaryScopeRef, nm)
 
-    member _.primaryAssemblyScopeRef = primaryScopeRef
+    member __.primaryAssemblyScopeRef = primaryScopeRef
     member x.primaryAssemblyRef = 
         match primaryScopeRef with 
         | ILScopeRef.Assembly aref -> aref

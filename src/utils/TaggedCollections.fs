@@ -480,13 +480,13 @@ namespace Internal.Utilities.Collections.Tagged
         let toSeq s = 
             let mutable i = SetIterator s
             { new IEnumerator<_> with 
-                  member _.Current = i.Current
+                  member __.Current = i.Current
               interface System.Collections.IEnumerator with 
-                  member _.Current = box i.Current
-                  member _.MoveNext() = i.MoveNext()
-                  member _.Reset() = i <- SetIterator s
+                  member __.Current = box i.Current
+                  member __.MoveNext() = i.MoveNext()
+                  member __.Reset() = i <- SetIterator s
               interface System.IDisposable with 
-                  member _.Dispose() = () }
+                  member __.Dispose() = () }
 
         //--------------------------------------------------------------------------
         // Set comparison.  This can be expensive.

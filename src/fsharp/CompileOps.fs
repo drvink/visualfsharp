@@ -3775,7 +3775,7 @@ type TcImportsSafeDisposal
 #endif
         for action in disposeActions do action()
 
-    override _.Finalize() =
+    override __.Finalize() =
         dispose ()
 
     interface IDisposable with

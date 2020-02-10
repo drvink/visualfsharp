@@ -40,6 +40,8 @@
     <InternalsVisibleTo Include="FSharp.Tests.FSharpSuite" />
     <InternalsVisibleTo Include="LanguageServiceProfiling" />
     <InternalsVisibleTo Include="CompilerServiceBenchmarks" />
+    <InternalsVisibleTo Include="fsi" />
+    <InternalsVisibleTo Include="fsiAnyCpu" />
   </ItemGroup>
 
   <ItemGroup>
@@ -271,7 +273,7 @@
       <Link>ReferenceResolution/reshapedmsbuild.fs</Link>
     </Compile>
     <!-- A legacy resolver used to help with scripting diagnostics in the Visual Studio tools -->
-    <Compile Include="..\LegacyMSBuildReferenceResolver.fsi">
+    <Compile Include="..\LegacyMSBuildReferenceResolver.fsi" Condition="'$(MonoPackaging)' != 'true'">
       <Link>ReferenceResolution/LegacyMSBuildReferenceResolver.fsi</Link>
     </Compile>
     <Compile Include="..\LegacyMSBuildReferenceResolver.fs" Condition="'$(MonoPackaging)' != 'true'">

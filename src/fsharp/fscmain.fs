@@ -60,7 +60,7 @@ module Driver =
 
         let legacyReferenceResolver = 
 #if CROSS_PLATFORM_COMPILER
-            SimulatedMSBuildReferenceResolver.SimulatedMSBuildResolver
+            SimulatedMSBuildReferenceResolver.getResolver()
 #else
             LegacyMSBuildReferenceResolver.getResolver()
 #endif

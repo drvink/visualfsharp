@@ -43,6 +43,10 @@
     <ProjectReference Include="$(MSBuildThisFileDirectory)..\FSharp.Compiler.Server.Shared\FSharp.Compiler.Server.Shared.fsproj" Condition="'$(TargetFramework)' == 'net472'" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
+  </ItemGroup>
+
   <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />

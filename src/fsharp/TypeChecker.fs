@@ -6330,7 +6330,7 @@ and TcIndexerThen cenv env overallTy mWholeExpr mDot tpenv wholeExpr e1 indexArg
         |> List.mapi ( fun pos indexerArg ->
             match indexerArg with
             | SynIndexerArg.One(expr, fromEnd, range) -> 
-                [ if fromEnd then rewriteReverseExpr pos expr range else expr ]
+                [ (if fromEnd then rewriteReverseExpr pos expr range else expr) ]
             | SynIndexerArg.Two
                 (
                     a1,
@@ -6340,8 +6340,8 @@ and TcIndexerThen cenv env overallTy mWholeExpr mDot tpenv wholeExpr e1 indexArg
                     range1,
                     range2) -> 
                 [
-                   if fromEnd1 then rewriteReverseOption a1 pos range1 else a1 ;
-                   if fromEnd2 then rewriteReverseOption a2 pos range2 else a2
+                   (if fromEnd1 then rewriteReverseOption a1 pos range1 else a1) ;
+                   (if fromEnd2 then rewriteReverseOption a2 pos range2 else a2)
                 ]
         )
         |> List.collect (id)
